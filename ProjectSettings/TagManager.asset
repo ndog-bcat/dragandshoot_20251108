@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Tile
   - Platform
+  - TurnTrigger
+  - platform_collide
   layers:
   - Default
   - TransparentFX

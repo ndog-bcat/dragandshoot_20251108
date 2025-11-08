@@ -49,5 +49,10 @@ public class opposite_player : MonoBehaviour
             direction = -direction;
             timer = changeTime;
         }
+        if (other.CompareTag("TurnTrigger"))
+        {
+            direction = -direction;
+            timer = changeTime;
+        }
     }
 }
