@@ -42,7 +42,7 @@ public class opposite_player : MonoBehaviour
         ballcontroller player = other.gameObject.GetComponent<ballcontroller>();
         if (player != null)
         {
-            player.KickedbyPlayer();
+            player.KickedbyPlayer(2);
         }
         if (other.CompareTag("Tile") || other.CompareTag("Platform"))
         {
