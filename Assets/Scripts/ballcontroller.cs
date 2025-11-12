@@ -127,6 +127,7 @@ public class ballcontroller : MonoBehaviour
                 current_max_distance = 0.85f * current_max_distance;
             }
         }
+        UI_handler.instance.UpdateJumpUI(current_jumpcount);
     }
 
     void FixedUpdate()
