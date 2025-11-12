@@ -10,9 +10,11 @@ public class platform_spawner : MonoBehaviour
     public float spawn_time = 5.0f;
     float timer;
 
+    public float start_time = 2.0f;
+
     void Start()
     {
-        timer = spawn_time;
+        timer = start_time;
     }
 
     void Update()

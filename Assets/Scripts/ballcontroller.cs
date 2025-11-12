@@ -24,10 +24,14 @@ public class ballcontroller : MonoBehaviour
 
     float distance;
     Vector2 direction;
-    public Vector2 kicked_direction = new Vector2(-1f, 1.3f).normalized;
+    public Vector2 kicked_direction = new Vector2(-2f, 1.3f).normalized;
 
     public int max_jumpcount = 2;
     int current_jumpcount;
+    bool isTouchingPlatform = false;
+    float relative_speed = 10f;
+    Rigidbody2D platform_rigidbody2d = null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,18 +49,35 @@ public class ballcontroller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (rigidbody2d.velocity.magnitude < 0.005f && IsGrounded())
+        if (isTouchingPlatform)
         {
-            is_stopped = true;
-            current_jumpcount = max_jumpcount; // 점프 횟수 충전
-            current_max_distance = max_distance; // 점프 거리 충전
+            if (relative_speed < 2f)
+            {
+                is_stopped = true;
+                current_jumpcount = max_jumpcount; // 점프 횟수 충전
+                current_max_distance = max_distance; // 점프 거리 충전
+            }
+            else
+            {
+                is_stopped = false;
+            }
         }
         else
         {
-            is_stopped = false;
-        }
+            if (rigidbody2d.velocity.magnitude < 0.005f)
+            {
+                is_stopped = true;
+                current_jumpcount = max_jumpcount; // 점프 횟수 충전
+                current_max_distance = max_distance; // 점프 거리 충전
+            }
+            else
+            {
+                is_stopped = false;
+            }
 
-        if (current_jumpcount <=0 && !is_stopped)
+        }
+        
+        if (current_jumpcount <= 0 && !is_stopped)
         {
             return;
         }
@@ -69,7 +90,7 @@ public class ballcontroller : MonoBehaviour
         }
         else if (Input.GetMouseButton(0))
         {
-            if (!on_calculate){ return; }
+            if (!on_calculate) { return; }
             Vector2 current = Input.mousePosition;
             Vector2 screenVec = current - start_point;
             float screenDist = screenVec.magnitude;
@@ -85,7 +106,7 @@ public class ballcontroller : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0)) // 커서 뗄때 끝점 잡기
         {
-            if (!on_calculate){ return; }
+            if (!on_calculate) { return; }
             // 끝점 계산 및 점프 가능 횟수 최신화
             end_point = Input.mousePosition;
             lineRenderer.enabled = false;
@@ -93,7 +114,7 @@ public class ballcontroller : MonoBehaviour
 
             //여기부터 start_point부터 end_point 거리 기반 발사 계산
             direction = (start_point - end_point).normalized;
-            distance = Vector2.Distance(start_point, end_point)/65; // 타일 한칸 길이가 54임
+            distance = Vector2.Distance(start_point, end_point) / 65; // 타일 한칸 길이가 54임
             distance = Mathf.Min(distance, current_max_distance);
 
             rigidbody2d.AddForce(direction * distance * 4f, ForceMode2D.Impulse);
@@ -129,23 +150,59 @@ public class ballcontroller : MonoBehaviour
 
     public void KickedbyPlayer(int mult)
     {
+        current_jumpcount = 0;
         rigidbody2d.velocity = Vector2.zero;
         rigidbody2d.AddForce(kicked_direction * (max_distance * mult) * 4f, ForceMode2D.Impulse);
     }
 
     public void enterPortal()
     {
+        Vector2 dir = new Vector2(0f, 1f).normalized;
+        current_jumpcount = 0;
+        rigidbody2d.velocity = Vector2.zero;
+        rigidbody2d.AddForce(dir * 6f, ForceMode2D.Impulse);
         rigidbody2d.position = Vector2.zero;
     }
 
-    bool IsGrounded()
-    {
-        CircleCollider2D circle = GetComponent<CircleCollider2D>();
-        float radius = circle.radius * transform.localScale.y;
-        float checkDistance = radius + 0.02f; // 살짝 여유 줘야 정확히 닿았을 때 반응함
+    // bool IsGrounded()
+    // {
+    //     CircleCollider2D circle = GetComponent<CircleCollider2D>();
+    //     float radius = circle.radius * transform.localScale.y;
+    //     float checkDistance = radius + 0.02f; // 살짝 여유 줘야 정확히 닿았을 때 반응함
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, checkDistance, LayerMask.GetMask("Ground"));
-        return hit.collider != null;
+    //     RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, checkDistance, LayerMask.GetMask("Ground"));
+    //     return hit.collider != null;
+    // }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("platform_collide"))
+        {
+            isTouchingPlatform = true;
+            platform_rigidbody2d = collision.rigidbody;
+            relative_speed = (rigidbody2d.velocity - platform_rigidbody2d.velocity).magnitude;
+            Debug.Log("플랫폼에 닿음");
+        }
     }
 
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("platform_collide"))
+        {
+            isTouchingPlatform = true;
+            platform_rigidbody2d = collision.rigidbody;
+            relative_speed = (rigidbody2d.velocity - platform_rigidbody2d.velocity).magnitude;
+            Debug.Log("플랫폼에 닿아있는 중. 속도: " + relative_speed);
+        }
+    }
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("platform_collide"))
+        {
+            isTouchingPlatform = false;
+            platform_rigidbody2d = null;
+            relative_speed = 10f;
+            Debug.Log("플랫폼에서 떨어짐 ❌");
+        }
+    }
 }

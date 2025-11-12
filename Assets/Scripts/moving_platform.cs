@@ -5,13 +5,13 @@ using UnityEngine;
 public class moving_platform : MonoBehaviour
 {
     public float moveSpeed = 2f;
-    public float mx_height = 20f;
+    public float mx_height = 30f;
     Rigidbody2D rigidbody2d;
-    Vector2 direction;
+    Vector2 direction = Vector2.zero;
     void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
-        direction = new Vector2(3f, 2f).normalized;
+        direction = Vector2.up;
     }
 
     void Update()
