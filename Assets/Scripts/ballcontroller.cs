@@ -152,6 +152,7 @@ public class ballcontroller : MonoBehaviour
     public void KickedbyPlayer(int mult)
     {
         current_jumpcount = 0;
+        UI_handler.instance.UpdateJumpUI(current_jumpcount);
         rigidbody2d.velocity = Vector2.zero;
         rigidbody2d.AddForce(kicked_direction * (max_distance * mult) * 4f, ForceMode2D.Impulse);
     }
