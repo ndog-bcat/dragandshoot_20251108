@@ -10,7 +10,7 @@ public class ballcontroller : MonoBehaviour
 {
     public InputAction MoveAction;
     Rigidbody2D rigidbody2d;
-    public float max_distance = 6.0f;
+    public float max_distance = 15.0f;
     float current_max_distance;
 
     bool is_stopped = true;
@@ -117,7 +117,7 @@ public class ballcontroller : MonoBehaviour
             distance = Vector2.Distance(start_point, end_point) / 65; // 타일 한칸 길이가 54임
             distance = Mathf.Min(distance, current_max_distance);
 
-            rigidbody2d.AddForce(direction * distance * 4f, ForceMode2D.Impulse);
+            rigidbody2d.AddForce(direction * distance * 8f, ForceMode2D.Impulse);
             on_calculate = false;
 
             start_point = Vector2.zero;
@@ -163,8 +163,8 @@ public class ballcontroller : MonoBehaviour
         Vector2 dir = new Vector2(0f, 1f).normalized;
         current_jumpcount = 0;
         rigidbody2d.velocity = Vector2.zero;
-        rigidbody2d.AddForce(dir * 6f, ForceMode2D.Impulse);
         rigidbody2d.position = Vector2.zero;
+        rigidbody2d.AddForce(dir * 15f, ForceMode2D.Impulse);
     }
 
     // bool IsGrounded()
