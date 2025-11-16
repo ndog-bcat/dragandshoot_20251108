@@ -10,7 +10,7 @@ public class ballcontroller : MonoBehaviour
 {
     public InputAction MoveAction;
     Rigidbody2D rigidbody2d;
-    public float max_distance = 4.0f;
+    public float max_distance = 6.0f;
     float current_max_distance;
 
     bool is_stopped = true;
@@ -155,6 +155,7 @@ public class ballcontroller : MonoBehaviour
         UI_handler.instance.UpdateJumpUI(current_jumpcount);
         rigidbody2d.velocity = Vector2.zero;
         rigidbody2d.AddForce(kicked_direction * (max_distance * mult) * 4f, ForceMode2D.Impulse);
+        UI_handler.instance.UpdateJumpUI(current_jumpcount);
     }
 
     public void enterPortal()
