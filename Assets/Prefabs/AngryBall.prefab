@@ -51,7 +51,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2.5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -286,4 +286,4 @@ MonoBehaviour:
     m_Flags: 0
   max_distance: 2.3
   kicked_direction: {x: -0.60971075, y: 0.79262394}
-  max_jumpcount: 2
+  max_jumpcount: 3

@@ -232,7 +232,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7280489440255421377, guid: b554492929490af45aac68a2a6ed1132, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.8
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7280489440255421377, guid: b554492929490af45aac68a2a6ed1132, type: 3}
       propertyPath: m_LocalPosition.z
@@ -837,7 +837,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.5573897, y: 4.37153, z: -10}
+  m_LocalPosition: {x: 1.1320821, y: 4.37153, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -991,7 +991,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7280489440255421377, guid: b554492929490af45aac68a2a6ed1132, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.8
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7280489440255421377, guid: b554492929490af45aac68a2a6ed1132, type: 3}
       propertyPath: m_LocalPosition.z
@@ -18845,17 +18845,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5452984438288260966, guid: 64bd7853173b390489091718e76055cd, type: 3}
-      propertyPath: max_jumpcount
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 5569371197371477679, guid: 64bd7853173b390489091718e76055cd, type: 3}
       propertyPath: m_Name
       value: AngryBall
-      objectReference: {fileID: 0}
-    - target: {fileID: 6594764859726674298, guid: 64bd7853173b390489091718e76055cd, type: 3}
-      propertyPath: m_GravityScale
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
