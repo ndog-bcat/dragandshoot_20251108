@@ -11,6 +11,10 @@ public class UI_handler : MonoBehaviour
     private VisualElement root;
     private VisualElement defaultZero;
     private VisualElement[] cntIcons = new VisualElement[3];
+    private VisualElement distanceUI;
+    private VisualElement background;
+    private VisualElement miniball;
+    private float bgWidth;
 
     private void Awake()
     {
@@ -29,6 +33,15 @@ public class UI_handler : MonoBehaviour
         cntIcons[0] = defaultZero.Q<VisualElement>("cnt1");
         cntIcons[1] = defaultZero.Q<VisualElement>("cnt2");
         cntIcons[2] = defaultZero.Q<VisualElement>("cnt3");
+
+        distanceUI = root.Q<VisualElement>("distance_UI");
+        background = distanceUI.Q<VisualElement>("background");
+        miniball = distanceUI.Q<VisualElement>("miniball");
+
+        background.RegisterCallback<GeometryChangedEvent>(evt =>
+        {
+            bgWidth = background.resolvedStyle.width;
+        });
     }
 
     // ballcontroller가 호출할 메서드
@@ -42,6 +55,17 @@ public class UI_handler : MonoBehaviour
             cntIcons[i].style.display = (i < currentJump)
                 ? DisplayStyle.Flex
                 : DisplayStyle.None;
+        }
+    }
+
+    public void UpdateDistanceUI(float start_x, float goal_x, float current_x)
+    {
+        float ratio = Mathf.InverseLerp(start_x, goal_x, current_x);
+        ratio = Mathf.Clamp01(ratio);
+        if (bgWidth > 0)
+        {
+            float newX = ratio * bgWidth;
+            miniball.style.left = new Length(newX, LengthUnit.Pixel);
         }
     }
 }

@@ -4,4 +4,8 @@
         <ui:VisualElement name="cnt2" style="flex-grow: 0; width: 100%; height: 100%; background-image: url(&quot;project://database/Assets/Arts/jump_cnt2.png?fileID=21300000&amp;guid=b28332e10856a9749990524ad3716c1a&amp;type=3#jump_cnt2&quot;); -unity-background-scale-mode: stretch-to-fill; position: absolute;" />
         <ui:VisualElement name="cnt3" style="flex-grow: 0; position: absolute; width: 100%; height: 100%; background-image: url(&quot;project://database/Assets/Arts/jump_cnt3.png?fileID=21300000&amp;guid=29476d6ec200def498185c251c613ee4&amp;type=3#jump_cnt3&quot;);" />
     </ui:VisualElement>
+    <ui:VisualElement name="distance_UI" style="flex-grow: 0; width: 1216px; height: 45px; -unity-background-scale-mode: scale-to-fit; left: 20%; top: 3%; position: absolute;">
+        <ui:VisualElement name="background" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Bar.png?fileID=21300000&amp;guid=935b019c832099048a0f2fcf1df366fb&amp;type=3#Bar&quot;); width: 100%; height: 100%; position: absolute;" />
+        <ui:VisualElement name="miniball" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/miniBall.png?fileID=21300000&amp;guid=b05015002860bac4ea15c7529676211f&amp;type=3#miniBall&quot;); width: 4%; height: 100%; position: absolute;" />
+    </ui:VisualElement>
 </ui:UXML>

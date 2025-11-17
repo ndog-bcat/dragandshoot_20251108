@@ -32,6 +32,8 @@ public class ballcontroller : MonoBehaviour
     float relative_speed = 10f;
     Rigidbody2D platform_rigidbody2d = null;
 
+    float goal_point_x = 1180f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,6 +53,7 @@ public class ballcontroller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UI_handler.instance.UpdateDistanceUI(0, goal_point_x, rigidbody2d.position.x);
         if (isTouchingPlatform)
         {
             if (relative_speed < 2f)
