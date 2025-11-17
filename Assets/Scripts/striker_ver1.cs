@@ -14,6 +14,7 @@ public class opposite_player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
         rigidbody2d = GetComponent<Rigidbody2D>();
         timer = changeTime;
         direction = Random.value < 0.5f ? -1 : 1;
@@ -30,6 +31,8 @@ public class opposite_player : MonoBehaviour
 
     void FixedUpdate()
     {
+        animator.SetFloat("Move X", direction);
+        animator.SetFloat("Move Y", 0);
         Vector2 position = rigidbody2d.position;
         position.x = position.x + speed * direction * Time.deltaTime;
         // animator.SetFloat("Move X", direction);
