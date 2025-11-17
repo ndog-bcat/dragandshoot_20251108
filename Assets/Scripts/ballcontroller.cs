@@ -35,6 +35,8 @@ public class ballcontroller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         rigidbody2d = GetComponent<Rigidbody2D>();
         lineRenderer = GetComponent<LineRenderer>();
 
@@ -84,6 +86,7 @@ public class ballcontroller : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0)) // 처음 눌렸을때 시작점 잡기
         {
+            Cursor.lockState = CursorLockMode.None;
             start_point = Input.mousePosition;
             lineRenderer.enabled = true;
             on_calculate = true;
@@ -106,6 +109,7 @@ public class ballcontroller : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0)) // 커서 뗄때 끝점 잡기
         {
+            Cursor.lockState = CursorLockMode.Locked;
             if (!on_calculate) { return; }
             // 끝점 계산 및 점프 가능 횟수 최신화
             end_point = Input.mousePosition;
