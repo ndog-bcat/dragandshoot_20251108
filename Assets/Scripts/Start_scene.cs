@@ -5,11 +5,11 @@ public class Startscreen: MonoBehaviour
 {
     void Update()
     {
-        // ¸¶¿ì½º Å¬¸¯ ¶Ç´Â Å°º¸µå ¹öÆ° ´­¸² °¨Áö
+        // ï¿½ï¿½ï¿½ì½º Å¬ï¿½ï¿½ ï¿½Ç´ï¿½ Å°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (Input.anyKeyDown)
         {
-            // ´ÙÀ½ ¾ÀÀ¸·Î ÀÌµ¿ (MainScene ÀÌ¸§Àº º»ÀÎ ÇÁ·ÎÁ§Æ® ÀÌ¸§¿¡ ¸Â°Ô ¹Ù²ãµµ OK)
-            SceneManager.LoadScene("SampleScene");
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ (MainScene ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½Â°ï¿½ ï¿½Ù²ãµµ OK)
+            SceneManager.LoadScene("tutorial");
         }
     }
 }

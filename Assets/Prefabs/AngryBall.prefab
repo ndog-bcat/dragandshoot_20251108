@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5452984438288260966}
   m_Layer: 0
   m_Name: AngryBall
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -287,3 +287,4 @@ MonoBehaviour:
   max_distance: 2.3
   kicked_direction: {x: -0.60971075, y: 0.79262394}
   max_jumpcount: 3
+  goal_point_x: 1180
