@@ -8,6 +8,7 @@ public class Startscreen: MonoBehaviour
 {
     public VideoPlayer videoPlayer;
     public AudioSource audioSource;
+    public AudioSource start_scene_sound;
     public AudioClip clickClip;
     public void GoToTuroial()
     {
@@ -15,6 +16,10 @@ public class Startscreen: MonoBehaviour
         StartCoroutine(DelayOnly());
         videoPlayer.Play();
         videoPlayer.loopPointReached += OnVideoFinished;
+        if (start_scene_sound != null && start_scene_sound.isPlaying)
+        {
+            start_scene_sound.Stop();
+        }
     }
 
     public IEnumerator DelayOnly()
