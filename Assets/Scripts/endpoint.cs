@@ -8,9 +8,15 @@ public class endpoint : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))  // 공 같은 오브젝트는 Player 태그 달아놔
+        if (other.CompareTag("Player"))
         {
-            SceneManager.LoadScene(nextSceneName);
+            StartCoroutine(loadnextscene(nextSceneName));
         }
+    }
+
+    IEnumerator loadnextscene(string nextSceneName)
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(nextSceneName);
     }
 }

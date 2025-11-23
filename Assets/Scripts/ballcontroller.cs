@@ -33,10 +33,15 @@ public class ballcontroller : MonoBehaviour
     Rigidbody2D platform_rigidbody2d = null;
 
     public float goal_point_x = 1180f;
-
+    AudioSource audioSource;
+    public AudioClip jumpClip;
+    public AudioClip kickedClip;
+    public GameObject portal_prefab;
+    private GameObject current_portal;
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         rigidbody2d = GetComponent<Rigidbody2D>();
         lineRenderer = GetComponent<LineRenderer>();
 
@@ -96,10 +101,11 @@ public class ballcontroller : MonoBehaviour
             if (!on_calculate) { return; }
             Vector2 current = Input.mousePosition;
             Vector2 screenVec = current - start_point;
-            float screenDist = screenVec.magnitude;
+            float screenDist = (current_max_distance*65 < screenVec.magnitude ? current_max_distance*65 : screenVec.magnitude); // 점프 최대 거리와 커서 거리 중 작은 값으로 라인 렌더러 길이 설정
             Vector2 screenDir = screenVec.normalized;
 
             Vector3 worldDir = (Vector3)(screenDir * screenDist * 0.015f);
+            // Vector3 worldDir = (Vector3)(screenDir * screenDist * 1f);
 
             Vector3 worldStart = transform.position;
             Vector3 worldEnd = worldStart + worldDir;
@@ -120,6 +126,7 @@ public class ballcontroller : MonoBehaviour
             distance = Vector2.Distance(start_point, end_point) / 65; // 타일 한칸 길이가 54임
             distance = Mathf.Min(distance, current_max_distance);
 
+            PlaySound(jumpClip);
             rigidbody2d.AddForce(direction * distance * 8f, ForceMode2D.Impulse);
             on_calculate = false;
 
@@ -133,43 +140,49 @@ public class ballcontroller : MonoBehaviour
         UI_handler.instance.UpdateJumpUI(current_jumpcount);
     }
 
-    void FixedUpdate()
-    {   // 업데이트는 프레임단위 계산 fixedupdate는 일정시간 단위 계산이기 때문에 거리계산 분리하면 뚝뚝 끊기는 움직임 발생
-        // if (end_point != Vector2.zero && start_point != Vector2.zero)
-        // {
-        //     direction = (start_point - end_point).normalized;
-        //     distance = Vector2.Distance(start_point, end_point);
-        //     distance = Mathf.Min(distance, current_max_distance);
-
-        //     rigidbody2d.AddForce(direction * distance * 4f, ForceMode2D.Impulse);
-
-        //     start_point = Vector2.zero;
-        //     end_point = Vector2.zero;
-        //     if (current_jumpcount < max_jumpcount)
-        //     {
-        //         current_max_distance = 0.85f * current_max_distance;
-        //     }
-        // }
-    }
-
     public void KickedbyPlayer(int mult)
     {
         current_jumpcount = 0;
         UI_handler.instance.UpdateJumpUI(current_jumpcount);
         rigidbody2d.velocity = Vector2.zero;
+        PlaySound(kickedClip);
         rigidbody2d.AddForce(kicked_direction * (max_distance * mult) * 4f, ForceMode2D.Impulse);
         UI_handler.instance.UpdateJumpUI(current_jumpcount);
     }
 
-    public void enterPortal()
+    IEnumerator SpawnPortalAtPosition(Vector2 spawn_point)
     {
         Vector2 dir = new Vector2(0f, 1f).normalized;
-        current_jumpcount = 0;
+        current_portal = Instantiate(portal_prefab, spawn_point, Quaternion.identity);
+        Vector2 start = spawn_point;
+        Vector2 upTarget = spawn_point + new Vector2(0, 2.5f); // 위로 2.5 유닛 이동
+        float t = 0f;
+        float duration = 0.4f;
         rigidbody2d.velocity = Vector2.zero;
-        rigidbody2d.position = Vector2.zero;
+        rigidbody2d.position = spawn_point;
+        while (t < 1f)
+        {
+            t += Time.deltaTime / duration;
+            current_portal.transform.position = Vector2.Lerp(start, upTarget, t);
+            yield return null;
+        }
         rigidbody2d.AddForce(dir * 15f, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(0.2f);
+        t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime / duration;
+            current_portal.transform.position = Vector2.Lerp(upTarget, start, t);
+            yield return null;
+        }
+        Destroy(current_portal);
     }
 
+    public void enterPortal(Vector2 spawn_point)
+    {
+        StartCoroutine(SpawnPortalAtPosition(spawn_point));
+    }
+    
     // bool IsGrounded()
     // {
     //     CircleCollider2D circle = GetComponent<CircleCollider2D>();
@@ -210,5 +223,10 @@ public class ballcontroller : MonoBehaviour
             relative_speed = 10f;
             Debug.Log("플랫폼에서 떨어짐 ❌");
         }
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 }

@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "drag_and_shoot.sln"
+    "dotnet.defaultSolution": "dragandshoot_20251108.sln"
 }
