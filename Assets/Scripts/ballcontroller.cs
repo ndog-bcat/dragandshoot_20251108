@@ -27,7 +27,21 @@ public class ballcontroller : MonoBehaviour
     public Vector2 kicked_direction = new Vector2(-2f, 1.3f).normalized;
 
     public int max_jumpcount = 2;
-    int current_jumpcount;
+    private int _current_jumpcount;
+    public int CurrentJumpCount
+    {
+        get { return _current_jumpcount; }
+        set
+        {
+            if (_current_jumpcount != value) // 값이 실제 달라졌을 때만 실행
+            {
+                _current_jumpcount = value;
+                // UI 갱신 호출 (UI_handler가 존재하는지 체크)
+                if (UI_handler.instance != null)
+                    UI_handler.instance.UpdateJumpUI(_current_jumpcount);
+            }
+        }
+    }
     bool isTouchingPlatform = false;
     float relative_speed = 10f;
     Rigidbody2D platform_rigidbody2d = null;
@@ -38,7 +52,7 @@ public class ballcontroller : MonoBehaviour
     public AudioClip kickedClip;
     public GameObject portal_prefab;
     private GameObject current_portal;
-    // Start is called before the first frame update
+    
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -48,7 +62,7 @@ public class ballcontroller : MonoBehaviour
         lineRenderer.positionCount = 2;
         lineRenderer.enabled = false;
 
-        current_jumpcount = max_jumpcount;
+        CurrentJumpCount = max_jumpcount;
         current_max_distance = max_distance;
         on_calculate = false;
     }
@@ -56,41 +70,52 @@ public class ballcontroller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UI_handler.instance.UpdateDistanceUI(0, goal_point_x, rigidbody2d.position.x);
-        if (isTouchingPlatform)
+        // ✨ [변경 2] 거리 UI 최적화
+        // 공이 멈춰있지 않을 때(움직일 때)만 거리 UI를 갱신합니다.
+        if (!is_stopped) 
         {
-            if (relative_speed < 2f)
-            {
-                is_stopped = true;
-                current_jumpcount = max_jumpcount; // 점프 횟수 충전
-                current_max_distance = max_distance; // 점프 거리 충전
-            }
-            else
-            {
-                is_stopped = false;
-            }
+            UI_handler.instance.UpdateDistanceUI(0, goal_point_x, rigidbody2d.position.x);
         }
-        else
-        {
-            if (rigidbody2d.velocity.magnitude < 0.005f)
-            {
-                is_stopped = true;
-                current_jumpcount = max_jumpcount; // 점프 횟수 충전
-                current_max_distance = max_distance; // 점프 거리 충전
-            }
-            else
-            {
-                is_stopped = false;
-            }
 
-        }
-        
-        if (current_jumpcount <= 0 && !is_stopped)
+        // 정지/움직임 상태 체크 로직
+        CheckMovementStatus();
+
+        // 점프 횟수 소진 시 리턴
+        if (CurrentJumpCount <= 0 && !is_stopped)
         {
             return;
         }
 
-        if (Input.GetMouseButtonDown(0)) // 처음 눌렸을때 시작점 잡기
+        HandleInput();
+    }
+
+    void CheckMovementStatus()
+    {
+        bool shouldStop = false;
+
+        if (isTouchingPlatform)
+        {
+            if (relative_speed < 2f) shouldStop = true;
+        }
+        else
+        {
+            if (rigidbody2d.velocity.magnitude < 0.005f) shouldStop = true;
+        }
+
+        if (shouldStop)
+        {
+            is_stopped = true;
+            CurrentJumpCount = max_jumpcount; // 프로퍼티 사용 -> UI 자동 갱신
+            current_max_distance = max_distance;
+        }
+        else
+        {
+            is_stopped = false;
+        }
+    }
+    void HandleInput()
+    {
+        if (Input.GetMouseButtonDown(0))
         {
             start_point = Input.mousePosition;
             lineRenderer.enabled = true;
@@ -98,32 +123,30 @@ public class ballcontroller : MonoBehaviour
         }
         else if (Input.GetMouseButton(0))
         {
-            if (!on_calculate) { return; }
+            if (!on_calculate) return;
             Vector2 current = Input.mousePosition;
             Vector2 screenVec = current - start_point;
-            float screenDist = (current_max_distance*65 < screenVec.magnitude ? current_max_distance*65 : screenVec.magnitude); // 점프 최대 거리와 커서 거리 중 작은 값으로 라인 렌더러 길이 설정
+            float screenDist = (current_max_distance * 65 < screenVec.magnitude ? current_max_distance * 65 : screenVec.magnitude);
             Vector2 screenDir = screenVec.normalized;
 
             Vector3 worldDir = (Vector3)(screenDir * screenDist * 0.015f);
-            // Vector3 worldDir = (Vector3)(screenDir * screenDist * 1f);
-
             Vector3 worldStart = transform.position;
             Vector3 worldEnd = worldStart + worldDir;
 
             lineRenderer.SetPosition(0, worldStart);
             lineRenderer.SetPosition(1, worldEnd);
         }
-        else if (Input.GetMouseButtonUp(0)) // 커서 뗄때 끝점 잡기
+        else if (Input.GetMouseButtonUp(0))
         {
-            if (!on_calculate) { return; }
-            // 끝점 계산 및 점프 가능 횟수 최신화
+            if (!on_calculate) return;
             end_point = Input.mousePosition;
             lineRenderer.enabled = false;
-            current_jumpcount -= 1;
 
-            //여기부터 start_point부터 end_point 거리 기반 발사 계산
+            // ✨ 점프 횟수 차감 (프로퍼티 사용 -> UI 자동 갱신)
+            CurrentJumpCount -= 1;
+
             direction = (start_point - end_point).normalized;
-            distance = Vector2.Distance(start_point, end_point) / 65; // 타일 한칸 길이가 54임
+            distance = Vector2.Distance(start_point, end_point) / 65;
             distance = Mathf.Min(distance, current_max_distance);
 
             PlaySound(jumpClip);
@@ -132,22 +155,20 @@ public class ballcontroller : MonoBehaviour
 
             start_point = Vector2.zero;
             end_point = Vector2.zero;
-            if (current_jumpcount < max_jumpcount)
+            
+            // max_jumpcount 대신 CurrentJumpCount 사용
+            if (CurrentJumpCount < max_jumpcount)
             {
                 current_max_distance = 0.85f * current_max_distance;
             }
         }
-        UI_handler.instance.UpdateJumpUI(current_jumpcount);
     }
-
     public void KickedbyPlayer(int mult)
     {
-        current_jumpcount = 0;
-        UI_handler.instance.UpdateJumpUI(current_jumpcount);
+        CurrentJumpCount = 0;
         rigidbody2d.velocity = Vector2.zero;
         PlaySound(kickedClip);
         rigidbody2d.AddForce(kicked_direction * (max_distance * mult) * 4f, ForceMode2D.Impulse);
-        UI_handler.instance.UpdateJumpUI(current_jumpcount);
     }
 
     IEnumerator SpawnPortalAtPosition(Vector2 spawn_point)
@@ -200,7 +221,6 @@ public class ballcontroller : MonoBehaviour
             isTouchingPlatform = true;
             platform_rigidbody2d = collision.rigidbody;
             relative_speed = (rigidbody2d.velocity - platform_rigidbody2d.velocity).magnitude;
-            Debug.Log("플랫폼에 닿음");
         }
     }
 
@@ -211,7 +231,6 @@ public class ballcontroller : MonoBehaviour
             isTouchingPlatform = true;
             platform_rigidbody2d = collision.rigidbody;
             relative_speed = (rigidbody2d.velocity - platform_rigidbody2d.velocity).magnitude;
-            Debug.Log("플랫폼에 닿아있는 중. 속도: " + relative_speed);
         }
     }
     void OnCollisionExit2D(Collision2D collision)
@@ -221,7 +240,6 @@ public class ballcontroller : MonoBehaviour
             isTouchingPlatform = false;
             platform_rigidbody2d = null;
             relative_speed = 10f;
-            Debug.Log("플랫폼에서 떨어짐 ❌");
         }
     }
 
