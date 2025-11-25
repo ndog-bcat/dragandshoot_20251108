@@ -50,9 +50,13 @@ public class ballcontroller : MonoBehaviour
     AudioSource audioSource;
     public AudioClip jumpClip;
     public AudioClip kickedClip;
+    public AudioClip portalClip;
     public GameObject portal_prefab;
     private GameObject current_portal;
     
+    bool is_break;
+    bool is_kicked;
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -70,11 +74,21 @@ public class ballcontroller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!is_kicked && Input.GetKeyDown(KeyCode.Space))
+        {
+            CurrentJumpCount = 0;
+            rigidbody2d.velocity = new Vector2(0f, rigidbody2d.velocity.y);
+            is_break = true;
+        }
         // ✨ [변경 2] 거리 UI 최적화
         // 공이 멈춰있지 않을 때(움직일 때)만 거리 UI를 갱신합니다.
-        if (!is_stopped) 
+        if (!is_stopped || is_break) 
         {
             UI_handler.instance.UpdateDistanceUI(0, goal_point_x, rigidbody2d.position.x);
+            if (is_break)
+            {
+                is_break = false;
+            }
         }
 
         // 정지/움직임 상태 체크 로직
@@ -104,6 +118,7 @@ public class ballcontroller : MonoBehaviour
 
         if (shouldStop)
         {
+            is_kicked = false;
             is_stopped = true;
             CurrentJumpCount = max_jumpcount; // 프로퍼티 사용 -> UI 자동 갱신
             current_max_distance = max_distance;
@@ -165,6 +180,7 @@ public class ballcontroller : MonoBehaviour
     }
     public void KickedbyPlayer(int mult)
     {
+        is_kicked = true;
         CurrentJumpCount = 0;
         rigidbody2d.velocity = Vector2.zero;
         PlaySound(kickedClip);
@@ -181,6 +197,7 @@ public class ballcontroller : MonoBehaviour
         float duration = 0.4f;
         rigidbody2d.velocity = Vector2.zero;
         rigidbody2d.position = spawn_point;
+        PlaySound(portalClip);
         while (t < 1f)
         {
             t += Time.deltaTime / duration;

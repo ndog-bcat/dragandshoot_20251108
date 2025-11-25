@@ -292,6 +292,7 @@ MonoBehaviour:
   goal_point_x: 100
   jumpClip: {fileID: 8300000, guid: f42a5b09e4a1dd24aaca8306051d8ef3, type: 3}
   kickedClip: {fileID: 8300000, guid: 1529dd9f963595540b4046b9f0577924, type: 3}
+  portalClip: {fileID: 8300000, guid: 8f8076ed7264c494196dd50a451e3a1c, type: 3}
   portal_prefab: {fileID: 3192386727502267727, guid: 53c014ef7db69204e8d559911ea26008, type: 3}
 --- !u!82 &7284635953950787474
 AudioSource:
