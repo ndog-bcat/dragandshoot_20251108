@@ -12,6 +12,7 @@ public class Startscreen: MonoBehaviour
     public AudioClip clickClip;
     public void GoToTuroial()
     {
+        Cursor.visible = false;
         audioSource.PlayOneShot(clickClip);
         StartCoroutine(DelayOnly());
         videoPlayer.Play();
@@ -35,6 +36,7 @@ public class Startscreen: MonoBehaviour
     }
     void OnVideoFinished(VideoPlayer vp)
     {
+        Cursor.visible = true;
         SceneManager.LoadScene("tutorial");
     }
 }
