@@ -1187,7 +1187,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.144513, y: 6.3718605, z: -10}
+  m_LocalPosition: {x: 9.054428, y: 6.3718605, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24285,6 +24285,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5452984438288260966, guid: 64bd7853173b390489091718e76055cd, type: 3}
+      propertyPath: portalClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8f8076ed7264c494196dd50a451e3a1c, type: 3}
     - target: {fileID: 5452984438288260966, guid: 64bd7853173b390489091718e76055cd, type: 3}
       propertyPath: goal_point_x
       value: 270
