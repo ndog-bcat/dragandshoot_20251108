@@ -23,13 +23,6 @@ public class Startscreen: MonoBehaviour
         }
     }
 
-    public void GoToManual()
-    {
-        audioSource.PlayOneShot(clickClip);
-        StartCoroutine(DelayOnly());
-        SceneManager.LoadScene("manual");
-    }
-
     public IEnumerator DelayOnly()
     {
         yield return new WaitForSeconds(1f);
@@ -37,6 +30,6 @@ public class Startscreen: MonoBehaviour
     void OnVideoFinished(VideoPlayer vp)
     {
         Cursor.visible = true;
-        SceneManager.LoadScene("tutorial");
+        SceneManager.LoadScene("manual");
     }
 }
