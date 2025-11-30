@@ -52,7 +52,7 @@ public class end : MonoBehaviour
 
     public void Tutorial()
     {
-        SceneManager.LoadScene("tutorial");
+        SceneManager.LoadScene("stage1");
     }
 
     IEnumerator PrepareAndPlay()
@@ -72,9 +72,6 @@ public class end : MonoBehaviour
         Debug.Log("엔딩 비디오 재생 시작.");
     }
 
-    /// <summary>
-    /// 비디오 재생이 끝났을 때 호출되는 함수
-    /// </summary>
     void OnVideoEnd(VideoPlayer vp)
     {
         Debug.Log("엔딩 비디오 재생 종료. 다음 동작 준비 중...");

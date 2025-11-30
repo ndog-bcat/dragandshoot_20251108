@@ -598,7 +598,7 @@ MonoBehaviour:
   lastImageTexture: {fileID: 2800000, guid: 8275b43cc644a3c4fa22571315f7e2ca, type: 3}
   videoPlayer: {fileID: 1950737426}
   videoDisplayImage: {fileID: 583921000}
-  startSceneName: tutorial
+  startSceneName: stage1
   backgroundMusicSource: {fileID: 780986194}
   transitionDelay: 0.3
 --- !u!4 &1174978707

@@ -11,7 +11,7 @@ public class manual_script : MonoBehaviour
     public Texture lastImageTexture;     // 마지막에 표시할 이미지 텍스처를 할당합니다.
     public VideoPlayer videoPlayer;
     public RawImage videoDisplayImage;
-    public string startSceneName = "tutorial";
+    public string startSceneName = "stage1";
 
     // 🔊 오디오 설정 값
     public AudioSource backgroundMusicSource; // 배경 음악을 재생할 AudioSource 컴포넌트를 할당합니다.
@@ -128,8 +128,7 @@ public class manual_script : MonoBehaviour
 
         // ⏳ 짧은 지연 후 씬 전환
         yield return new WaitForSeconds(transitionDelay); 
-
-        // 🎬 시작 화면으로 돌아가기
+        // stage1 시작
         if (backgroundMusicSource != null)
         {
             backgroundMusicSource.Stop(); 
