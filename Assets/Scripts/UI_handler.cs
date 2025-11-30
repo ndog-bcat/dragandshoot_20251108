@@ -13,6 +13,7 @@ public class UI_handler : MonoBehaviour
     private VisualElement distanceUI;
     private VisualElement background;
     private VisualElement miniball;
+    private VisualElement goalPanel;
     private float bgWidth;
 
     private bool isInitialized = false; // ✨ 초기화 여부 체크용 플래그
@@ -62,6 +63,13 @@ public class UI_handler : MonoBehaviour
                 });
             }
         }
+
+        goalPanel = root.Q<VisualElement>("goal_panel");
+
+        if (goalPanel != null)
+        {
+            goalPanel.style.display = DisplayStyle.None;
+        }
         
         isInitialized = true; // 준비 완료
     }
@@ -98,5 +106,12 @@ public class UI_handler : MonoBehaviour
 
         float newX = ratio * bgWidth;
         miniball.style.left = new Length(newX, LengthUnit.Pixel);
+    }
+    public void ShowGoalUI(bool show)
+    {
+        if (!isInitialized || goalPanel == null) return;
+        
+        // Goal UI 표시 상태를 설정합니다.
+        goalPanel.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
     }
 }

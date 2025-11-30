@@ -8,4 +8,8 @@
         <ui:VisualElement name="background" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Bar.png?fileID=21300000&amp;guid=935b019c832099048a0f2fcf1df366fb&amp;type=3#Bar&quot;); width: 100%; height: 100%; position: absolute;" />
         <ui:VisualElement name="miniball" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/miniBall.png?fileID=21300000&amp;guid=b05015002860bac4ea15c7529676211f&amp;type=3#miniBall&quot;); width: 4%; height: 100%; position: absolute;" />
     </ui:VisualElement>
+    <ui:VisualElement name="goal_panel" style="flex-grow: 0; position: absolute; width: 156%; height: 120%; background-image: url(&quot;project://database/Assets/Arts/goal_panel.png?fileID=21300000&amp;guid=004a8ad6579e2ff44866094e40851b35&amp;type=3#goal_panel&quot;); -unity-background-scale-mode: scale-to-fit; left: -28%; top: -10%;">
+        <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Button" style="position: absolute; left: 44.3%; top: 70%; width: 368px; height: 96px; background-color: rgb(250, 242, 236);" />
+        <ui:Button text="press enter!" parse-escape-sequences="true" display-tooltip-when-elided="true" style="position: absolute; left: 44.6%; width: 350px; height: 80px; top: 70.6%; background-color: rgb(45, 98, 186); font-size: 50%; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&amp;guid=e3265ab4bf004d28a9537516768c1c75&amp;type=3#LiberationSans&quot;); -unity-font-style: bold; color: rgb(255, 255, 255);" />
+    </ui:VisualElement>
 </ui:UXML>
