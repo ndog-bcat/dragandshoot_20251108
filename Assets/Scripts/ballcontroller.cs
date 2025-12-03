@@ -71,7 +71,6 @@ public class ballcontroller : MonoBehaviour
         on_calculate = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!is_kicked && Input.GetKeyDown(KeyCode.Space))
@@ -80,8 +79,7 @@ public class ballcontroller : MonoBehaviour
             rigidbody2d.velocity = new Vector2(0f, rigidbody2d.velocity.y);
             is_break = true;
         }
-        // ✨ [변경 2] 거리 UI 최적화
-        // 공이 멈춰있지 않을 때(움직일 때)만 거리 UI를 갱신합니다.
+        // 공이 멈춰있지 않을 때(움직일 때)만 거리 UI 갱신
         if (!is_stopped || is_break) 
         {
             UI_handler.instance.UpdateDistanceUI(0, goal_point_x, rigidbody2d.position.x);
@@ -120,7 +118,7 @@ public class ballcontroller : MonoBehaviour
         {
             is_kicked = false;
             is_stopped = true;
-            CurrentJumpCount = max_jumpcount; // 프로퍼티 사용 -> UI 자동 갱신
+            CurrentJumpCount = max_jumpcount;
             current_max_distance = max_distance;
         }
         else
@@ -157,7 +155,6 @@ public class ballcontroller : MonoBehaviour
             end_point = Input.mousePosition;
             lineRenderer.enabled = false;
 
-            // ✨ 점프 횟수 차감 (프로퍼티 사용 -> UI 자동 갱신)
             CurrentJumpCount -= 1;
 
             direction = (start_point - end_point).normalized;
@@ -171,7 +168,6 @@ public class ballcontroller : MonoBehaviour
             start_point = Vector2.zero;
             end_point = Vector2.zero;
             
-            // max_jumpcount 대신 CurrentJumpCount 사용
             if (CurrentJumpCount < max_jumpcount)
             {
                 current_max_distance = 0.85f * current_max_distance;
@@ -220,16 +216,6 @@ public class ballcontroller : MonoBehaviour
     {
         StartCoroutine(SpawnPortalAtPosition(spawn_point));
     }
-    
-    // bool IsGrounded()
-    // {
-    //     CircleCollider2D circle = GetComponent<CircleCollider2D>();
-    //     float radius = circle.radius * transform.localScale.y;
-    //     float checkDistance = radius + 0.02f; // 살짝 여유 줘야 정확히 닿았을 때 반응함
-
-    //     RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, checkDistance, LayerMask.GetMask("Ground"));
-    //     return hit.collider != null;
-    // }
 
     void OnCollisionEnter2D(Collision2D collision)
     {

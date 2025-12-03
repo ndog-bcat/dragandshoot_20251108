@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements; // UIElements 네임스페이스 추가
+using UnityEngine.UIElements;
 
 public class endpoint : MonoBehaviour
 {
@@ -51,7 +51,6 @@ public class endpoint : MonoBehaviour
             UI_handler.instance.ShowGoalUI(true); 
         }
         isWaitingForInput = true;
-        Debug.Log("Goal Reached! Press Enter to load next scene.");
     }
 
     public void PlaySound(AudioClip clip)

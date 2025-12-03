@@ -13,6 +13,7 @@ public class Startscreen: MonoBehaviour
     public void GoToTuroial()
     {
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         audioSource.PlayOneShot(clickClip);
         StartCoroutine(DelayOnly());
         videoPlayer.Play();
@@ -30,6 +31,7 @@ public class Startscreen: MonoBehaviour
     void OnVideoFinished(VideoPlayer vp)
     {
         Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         SceneManager.LoadScene("manual");
     }
 }

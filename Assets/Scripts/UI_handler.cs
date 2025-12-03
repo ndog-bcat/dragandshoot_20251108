@@ -16,11 +16,11 @@ public class UI_handler : MonoBehaviour
     private VisualElement goalPanel;
     private float bgWidth;
 
-    private bool isInitialized = false; // ✨ 초기화 여부 체크용 플래그
+    private bool isInitialized = false; // 초기화 여부 체크용 플래그
 
     private void Awake()
     {
-        // 싱글톤 보호: 이미 있으면 나를 파괴 (안전장치)
+        // 싱글톤 보호: 이미 있으면 나를 파괴
         if (instance != null && instance != this)
         {
             Destroy(this.gameObject);
@@ -111,7 +111,7 @@ public class UI_handler : MonoBehaviour
     {
         if (!isInitialized || goalPanel == null) return;
         
-        // Goal UI 표시 상태를 설정합니다.
+        // Goal UI 표시 상태 설정
         goalPanel.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
     }
 }
