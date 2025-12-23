@@ -176,6 +176,7 @@ public class ballcontroller : MonoBehaviour
     }
     public void KickedbyPlayer(int mult)
     {
+        Record_manager.Instance.KickedRecord();
         is_kicked = true;
         CurrentJumpCount = 0;
         rigidbody2d.velocity = Vector2.zero;
@@ -214,6 +215,7 @@ public class ballcontroller : MonoBehaviour
 
     public void enterPortal(Vector2 spawn_point)
     {
+        Record_manager.Instance.ToZeroRecord();
         StartCoroutine(SpawnPortalAtPosition(spawn_point));
     }
 

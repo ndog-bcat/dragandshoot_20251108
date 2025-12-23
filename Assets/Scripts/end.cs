@@ -2,12 +2,15 @@ using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.SceneManagement; 
 using System.Collections;
+using TMPro;
 
 public class end : MonoBehaviour
 {
     public VideoPlayer videoPlayer; 
     public VideoClip endingVideoClip;
     public AudioSource end_scene_sound;
+    public GameObject resultUI;
+    public TMP_Text recordText;
 
     private void Start()
     {
@@ -69,5 +72,40 @@ public class end : MonoBehaviour
         {
             end_scene_sound.Play();
         }
+        ShowRecords();
+        if (resultUI != null)
+        {
+            resultUI.SetActive(true);
+        }
+    }
+
+    void ShowRecords()
+    {
+        if (Record_manager.Instance == null || recordText == null)
+        {
+            Debug.LogError("할당안됐어");
+            return;
+        }
+
+        // 문자열을 빌드할 때 가독성을 위해 상단에 타이틀 추가
+        string finalReport = "<size=120%><b>[ STAGE RECORDS ]</b></size>\n\n";
+        
+        foreach (var record in Record_manager.Instance.stageRecords)
+        {
+            // 실제 데이터가 있는(플레이한) 스테이지 기록만 표시하거나 모두 표시
+            if (record.Value[0] <= 0 && record.Value[1] <= 0) continue; 
+
+            string stageName = record.Key;
+            float time = record.Value[0];
+            int kicked = (int)record.Value[1];
+            int toZero = (int)record.Value[2];
+
+            string timeStr = string.Format("{0:00}:{1:00}", (int)time / 60, (int)time % 60);
+            
+            // 축구 컨셉에 맞춘 텍스트 구성
+            finalReport += $"<b>{stageName}</b> : {timeStr} | Kicked: {kicked} | Restart: {toZero}\n";
+        }
+
+        recordText.text = finalReport;
     }
 }

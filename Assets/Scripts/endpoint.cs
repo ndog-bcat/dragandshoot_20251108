@@ -36,6 +36,7 @@ public class endpoint : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Record_manager.Instance.TimeRecord();
             GetComponent<Collider2D>().enabled = false; 
 
             PlaySound(reachedClip);
