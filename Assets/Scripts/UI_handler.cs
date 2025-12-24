@@ -15,8 +15,6 @@ public class UI_handler : MonoBehaviour
     private VisualElement background;
     private VisualElement miniball;
     private VisualElement goalPanel;
-    private VisualElement recordPanel;
-    private TMP_Text recordText;
     private float bgWidth;
 
     private bool isInitialized = false; // 초기화 여부 체크용 플래그
@@ -116,20 +114,5 @@ public class UI_handler : MonoBehaviour
         
         // Goal UI 표시 상태 설정
         goalPanel.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
-    }
-
-    public void RecordUI()
-    {
-        if (Record_manager.Instance == null || recordPanel == null) return;
-
-        string finalReport = "<size=150%><color=#FFD700><b>[ FINAL SCORE ]</b></color></size>\n\n";
-        foreach (var record in Record_manager.Instance.stageRecords)
-        {
-            if (record.Value[0] <= 0 && record.Value[1] <= 0) continue; 
-            string timeStr = string.Format("{0:00}:{1:00}", (int)record.Value[0] / 60, (int)record.Value[0] % 60);
-            finalReport += $"<margin=10%><b>{record.Key}</b> : {timeStr} | Kicks: {record.Value[1]}\n";
-        }
-
-        recordText.text = finalReport;
     }
 }
